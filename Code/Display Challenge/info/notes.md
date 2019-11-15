@@ -31,3 +31,17 @@
 - Total Characters = 32 characters
 
 - interface port = PORT K 
+
+# Function snippet
+```c
+void display_challenge(int numberSequence[]) {
+   // read the array of int and convert it into an array of char 
+   int index;
+   int sizeOfArray = sizeof(numberSequence)/sizeof(*numberSequence);
+   for(index = 0; index < sizeOfArray; index++){
+      int numChar;
+      numChar = sizeOfArray + '0'; // converting int number to a char (apprently the way to convert it and get a char on the LCD)
+      putcLCD(numChar);
+   }   
+}
+```

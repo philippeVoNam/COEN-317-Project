@@ -14,6 +14,7 @@ void openLCD(void);
 void putcLCD(char cx);
 void putsLCD(char *ptr);
 
+
 const unsigned char keypad[4][4] =
 {
 '1','2','3','A',
