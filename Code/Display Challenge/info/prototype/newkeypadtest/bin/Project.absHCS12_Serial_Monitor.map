@@ -29,7 +29,7 @@ Section Name                    Size  Type     From       To       Segment
 .init                             16     R     0xC000     0xC00F   ROM_C000
 .rodata                           16     R     0xC010     0xC01F   ROM_C000
 .rodata1                          25     R     0xC020     0xC038   ROM_C000
-.text                            494     R     0xC039     0xC226   ROM_C000
+.text                            520     R     0xC039     0xC240   ROM_C000
 .stack                           256   R/W     0x1000     0x10FF   RAM
 .abs_section_8                     1   N/I        0x8        0x8   .absSeg0
 .abs_section_9                     1   N/I        0x9        0x9   .absSeg1
@@ -373,12 +373,12 @@ Section Name                    Size  Type     From       To       Segment
 .abs_section_2ae                   2   N/I      0x2AE      0x2AF   .absSeg339
 .abs_section_2be                   2   N/I      0x2BE      0x2BF   .absSeg340
 .common                            2   R/W     0x1100     0x1101   RAM
-CodeSec                           68     R     0xC227     0xC26A   ROM_C000
+CodeSec                           68     R     0xC241     0xC284   ROM_C000
 DataSec                            2   R/W     0x1102     0x1103   RAM
 .vectSeg341_vect                   2     R     0xFFFE     0xFFFF   .vectSeg341
 
 Summary of section sizes per section type:
-READ_ONLY (R):         26D (dec:      621)
+READ_ONLY (R):         287 (dec:      647)
 READ_WRITE (R/W):      104 (dec:      260)
 NO_INIT (N/I):         190 (dec:      400)
 
@@ -738,12 +738,13 @@ MODULE:                 -- mc9s12dg256.c.o --
      _CAN4TXTSR                                 2BE       2       2       0   .abs_section_2be
 MODULE:                 -- main.c.o --
 - PROCEDURES:
-     main                                      C039     124     292      12   .text       
-     cmd2LCD                                   C15D      3D      61       8   .text       
-     openLCD                                   C19A      22      34       1   .text       
-     putcLCD                                   C1BC      41      65       3   .text       
-     putsLCD                                   C1FD       E      14       1   .text       
-     display_challenge                         C20B      1C      28       1   .text       
+     main                                      C039     10C     268       8   .text       
+     cmd2LCD                                   C145      3D      61       8   .text       
+     openLCD                                   C182      22      34       1   .text       
+     putcLCD                                   C1A4      41      65       4   .text       
+     putsLCD                                   C1E5       E      14       1   .text       
+     display_challenge                         C1F3      2B      43       1   .text       
+     delay_LCD                                 C21E      23      35       1   .text       
 - VARIABLES:
      keypad                                    C010      10      16       5   .rodata     
      STRING.Press.button.1                     C020       D      13       1   .rodata1    
@@ -758,16 +759,16 @@ MODULE:                 -- Start12.c.o --
      __SEG_END_SSTACK                          1100       0       0       1               
 MODULE:                 -- mixasm.asm.o --
 - PROCEDURES:
-     asm_mydelay1ms                            C227       7       7       7   CodeSec     
-     oloop                                     C22E       3       3       0   CodeSec     
-     iloop                                     C231      11      17       0   CodeSec     
-     next                                      C242       5       5       0   CodeSec     
-     fini                                      C247       2       2       0   CodeSec     
-     asm_mydelay10us                           C249       7       7       2   CodeSec     
-     uoloop                                    C250       3       3       0   CodeSec     
-     uiloop                                    C253      11      17       0   CodeSec     
-     unext                                     C264       5       5       0   CodeSec     
-     ufini                                     C269       2       2       0   CodeSec     
+     asm_mydelay1ms                            C241       7       7       6   CodeSec     
+     oloop                                     C248       3       3       0   CodeSec     
+     iloop                                     C24B      11      17       0   CodeSec     
+     next                                      C25C       5       5       0   CodeSec     
+     fini                                      C261       2       2       0   CodeSec     
+     asm_mydelay10us                           C263       7       7       2   CodeSec     
+     uoloop                                    C26A       3       3       0   CodeSec     
+     uiloop                                    C26D      11      17       0   CodeSec     
+     unext                                     C27E       5       5       0   CodeSec     
+     ufini                                     C283       2       2       0   CodeSec     
 - VARIABLES:
      ASMData1ms                                1102       1       1       2   DataSec     
      ASMData10us                               1103       1       1       2   DataSec     
@@ -777,7 +778,7 @@ MODULE STATISTIC
   Name                                      Data   Code  Const
 ---------------------------------------------------------------------------------------------
   mc9s12dg256.c.o                            400      0      0
-  main.c.o                                     2    494     41
+  main.c.o                                     2    520     41
   Start12.c.o                                  0     16      0
   mixasm.asm.o                                 2     68      0
   other                                      256      2      0
@@ -786,7 +787,7 @@ MODULE STATISTIC
 SECTION USE IN OBJECT-ALLOCATION SECTION
 ---------------------------------------------------------------------------------------------
 SECTION: ".text"
-  main cmd2LCD openLCD putcLCD putsLCD display_challenge 
+  main cmd2LCD openLCD putcLCD putsLCD display_challenge delay_LCD 
 SECTION: ".init"
   _Startup 
 SECTION: ".rodata"
@@ -1836,22 +1837,23 @@ OBJECT LIST SORTED BY ADDRESS
      keypad                                    C010      10      16       5   .rodata     
      STRING.Press.button.1                     C020       D      13       1   .rodata1    
      STRING..on.key.pad.2                      C02D       C      12       1   .rodata1    
-     main                                      C039     124     292      12   .text       
-     cmd2LCD                                   C15D      3D      61       8   .text       
-     openLCD                                   C19A      22      34       1   .text       
-     putcLCD                                   C1BC      41      65       3   .text       
-     putsLCD                                   C1FD       E      14       1   .text       
-     display_challenge                         C20B      1C      28       1   .text       
-     asm_mydelay1ms                            C227       7       7       7   CodeSec     
-     oloop                                     C22E       3       3       0   CodeSec     
-     iloop                                     C231      11      17       0   CodeSec     
-     next                                      C242       5       5       0   CodeSec     
-     fini                                      C247       2       2       0   CodeSec     
-     asm_mydelay10us                           C249       7       7       2   CodeSec     
-     uoloop                                    C250       3       3       0   CodeSec     
-     uiloop                                    C253      11      17       0   CodeSec     
-     unext                                     C264       5       5       0   CodeSec     
-     ufini                                     C269       2       2       0   CodeSec     
+     main                                      C039     10C     268       8   .text       
+     cmd2LCD                                   C145      3D      61       8   .text       
+     openLCD                                   C182      22      34       1   .text       
+     putcLCD                                   C1A4      41      65       4   .text       
+     putsLCD                                   C1E5       E      14       1   .text       
+     display_challenge                         C1F3      2B      43       1   .text       
+     delay_LCD                                 C21E      23      35       1   .text       
+     asm_mydelay1ms                            C241       7       7       6   CodeSec     
+     oloop                                     C248       3       3       0   CodeSec     
+     iloop                                     C24B      11      17       0   CodeSec     
+     next                                      C25C       5       5       0   CodeSec     
+     fini                                      C261       2       2       0   CodeSec     
+     asm_mydelay10us                           C263       7       7       2   CodeSec     
+     uoloop                                    C26A       3       3       0   CodeSec     
+     uiloop                                    C26D      11      17       0   CodeSec     
+     unext                                     C27E       5       5       0   CodeSec     
+     ufini                                     C283       2       2       0   CodeSec     
 
 *********************************************************************************************
 UNUSED-OBJECTS SECTION
@@ -1867,13 +1869,14 @@ OBJECT-DEPENDENCIES SECTION
 _Startup                  USES __SEG_END_SSTACK main 
 main                      USES _DDRJ _DDRP _PTP _DDRAB openLCD 
                                 STRING.Press.button.1 putsLCD STRING..on.key.pad.2 cmd2LCD 
-                                display_challenge main _PORTAB asm_mydelay1ms column row keypad 
+                                display_challenge _PORTAB main asm_mydelay1ms column row keypad 
                                 putcLCD 
 cmd2LCD                   USES _PORTK asm_mydelay10us 
 openLCD                   USES _DDRK asm_mydelay1ms cmd2LCD 
 putcLCD                   USES _PORTK asm_mydelay10us 
 putsLCD                   USES putcLCD 
-display_challenge         USES putcLCD 
+display_challenge         USES putcLCD delay_LCD 
+delay_LCD                 USES asm_mydelay1ms cmd2LCD 
 iloop                     USES ASMData1ms 
 next                      USES ASMData1ms 
 uiloop                    USES ASMData10us 
@@ -1905,7 +1908,13 @@ DEPENDENCY TREE
  |  +- display_challenge   
  |  |  | 
  |  |  +- putcLCD              (see above)
- |  |     
+ |  |  |  
+ |  |  +- delay_LCD           
+ |  |     | 
+ |  |     +- asm_mydelay1ms       (see above)
+ |  |     |  
+ |  |     +- cmd2LCD              (see above)
+ |  |        
  |  +- asm_mydelay1ms       (see above)
  |  |  
  |  +- putcLCD              (see above)
@@ -1920,6 +1929,6 @@ STATISTIC SECTION
 
 ExeFile:
 --------
-Number of blocks to be downloaded: 4
-Total size of all blocks to be downloaded: 621
+Number of blocks to be downloaded: 3
+Total size of all blocks to be downloaded: 647
 

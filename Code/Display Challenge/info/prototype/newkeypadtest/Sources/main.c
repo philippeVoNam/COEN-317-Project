@@ -15,7 +15,8 @@ void putcLCD(char cx);
 void putsLCD(char *ptr);
 
 // Philippe Code 
-void display_challenge(int numberSequence[]); // display the numbers onto the LCD that the challenge generated
+void display_challenge(int numberSequence[], int size, int time); // display the numbers onto the LCD that the challenge generated for that amount of time (in seconds)
+void delay_LCD(int seconds); // delays the output of LCD before clearing LCD
 
 const unsigned char keypad[4][4] =
 {
@@ -30,6 +31,7 @@ unsigned char column,row;
 void main(void){                          //OPEN MAIN
    char *msg1 = "Press button";
    int nums[5] = {9,8,3,4,5};
+   int size = sizeof(nums)/sizeof(nums[0]);
 
    //DDRB = 0xFF;                           //MAKE PORTB OUTPUT
    DDRJ |=0x02; 
@@ -44,18 +46,7 @@ void main(void){                          //OPEN MAIN
 	//putsLCD(msg1);
   cmd2LCD(0xC0); // move cursor to 2nd row, 1st column	
 
-  display_challenge(nums);
-	
-	// seems to be a limit to the delay, had to cascade them to get a noticeable delay
-  asm_mydelay1ms(2000);
-  asm_mydelay1ms(2000);
-  asm_mydelay1ms(2000);
-  asm_mydelay1ms(2000);
-  asm_mydelay1ms(2000);
-  asm_mydelay1ms(2000);
-  asm_mydelay1ms(2000);
-  asm_mydelay1ms(2000);
-  cmd2LCD(0x01); // clear screen
+  display_challenge(nums,size,5);	
   
    while(1){                              //OPEN WHILE(1)
       do{                                 //OPEN do1
@@ -238,13 +229,28 @@ void putsLCD (char *ptr) {
     }
 }
 
-void display_challenge(int numberSequence[]) {
+void display_challenge(int numberSequence[], int size, int time) {
    // read the array of int and convert it into an array of char 
    int index;
-   int sizeOfArray = sizeof(numberSequence)/sizeof(*numberSequence);
-   for(index = 0; index < sizeOfArray; index++){
+   for(index = 0; index < size; index++){
       int numChar;
-      numChar = sizeOfArray + '0'; // converting int number to a char (apprently the way to convert it and get a char on the LCD)
+      numChar = numberSequence[index] + '0'; // converting int number to a char (apprently the way to convert it and get a char on the LCD)
       putcLCD(numChar);
-   }   
+      putcLCD('-');
+   }
+   
+   delay_LCD(time);
+   
+   // # To-Dos
+   // - add time parameter to display the number for a limited amount of time    
+}
+
+void delay_LCD(int seconds){
+  // seems to be a limit to the delay, had to cascade them to get a noticeable delay
+  int delayMax = seconds * 5; // number of iteration to get seconds of delay (ie. 10 cycles is 2 seconds delay)
+  int delayCycles;
+	for (delayCycles = 0; delayCycles < delayMax; delayCycles++){
+  	asm_mydelay1ms(2000);
+	}
+  cmd2LCD(0x01); // clear screen
 }
