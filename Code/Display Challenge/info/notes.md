@@ -60,3 +60,10 @@ void delay_LCD(int seconds){
   cmd2LCD(0x01); // clear screen
 }
 ```
+
+# Interesting about C
+
+In C arrays are passed as a pointer to the first element. They are the only element that is not really passed by value (the pointer is passed by value, but the array is not copied). That allows the called function to modify the contents.
+
+> THAT MEANS THAT YOU CANNOT FIND THE SIZE OF THE ARRAY INSIDE THE FUNCTION !!!!
+> YOU NEED TO PASS A SIZE INPUT PARAMETER !!!! WTF !!! 
