@@ -40,15 +40,14 @@ void print_char(char text){
     printf("%c", text);
 }
 
-void display_challenge(int &numberSequence[]) {
+void display_challenge(int numberSequence[], int size, int time) {
    // read the array of int and convert it into an array of char 
    int index;
-   size_t sizeOfArray = sizeof(numberSequence)/sizeof(numberSequence[0]);
-   printf("The integer is: %d\n", sizeOfArray);
-    // printf("\n");
-//    for(index = 0; index < sizeOfArray; index++){
-//       int numChar;
-//       numChar = numberSequence[index] + '0'; // converting int number to a char (apprently the way to convert it and get a char on the LCD)
-//       print_char(numChar);
-//    }   
-}
+   for(index = 0; index < size; index++){
+      int numChar;
+      numChar = numberSequence[index] + '0'; // converting int number to a char (apprently the way to convert it and get a char on the LCD)
+      putcLCD(numChar);
+      if(index < (size-1)){
+          putcLCD('-');
+      }
+   }

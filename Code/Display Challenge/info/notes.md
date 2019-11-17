@@ -25,14 +25,14 @@
   - level            = int
   - time             = int 
 
-# LCD Notes
+## LCD Notes
 - 2 Lines
 - 16 Characters per lines
 - Total Characters = 32 characters
 
 - interface port = PORT K 
 
-# Function snippet
+## Function snippet
 ```c
 void display_challenge(int numberSequence[], int size, int time) {
    // read the array of int and convert it into an array of char 
@@ -41,9 +41,12 @@ void display_challenge(int numberSequence[], int size, int time) {
       int numChar;
       numChar = numberSequence[index] + '0'; // converting int number to a char (apprently the way to convert it and get a char on the LCD)
       putcLCD(numChar);
-      putcLCD('-');
+      if(index < (size-1)){
+          putcLCD('-'); // putting a - between numbers except for the last one
+      }
    }
    
+   // Delay the output of the LCD for a specific amount of time before clearing hte LCD as per the challenge 
    delay_LCD(time);
    
    // # To-Dos
