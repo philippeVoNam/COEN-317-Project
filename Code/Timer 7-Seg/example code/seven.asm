@@ -77,7 +77,9 @@ _Startup:
             movb #$00, PTP   ; All four 7-seg displays cathodes are set to 0 (i.e., they are turned on)
             
             
-showDIPSW:  ldaa #10        ; Data from DIP switches appear in A. Note that PTH(3..0) are also the pushbuttons
+showDIPSW:  
+            tba ; A <= B. B receives the parameter.
+            ;ldaa #10        ; Data from DIP switches appear in A. Note that PTH(3..0) are also the pushbuttons
                             ; Note that data on the 7-seg displays is only valid for DIP switches 3 to 0. (from 0 to F)
             anda #$0F       ; Only the 4 LSBs are considered
             ldab A, X       ; B <- [A+sevsegdata].
