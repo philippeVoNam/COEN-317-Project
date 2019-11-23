@@ -74,18 +74,34 @@ void putcLCD(char cx) {
     char hnibble, lnibble;
     //temp = cx;
     // note that here, RS is always 1
+
+    // RS = 1 : data input 
+    // RS = 0 : instruction input (clearing and cursor movements)
+    // EN = 1 : enable  -> to write the bits that we sent  
+    // EN = 0 : disable 
+
+    /*
+    Steps :
+    - Send the higher bits of the char
+        - set RS and EN to 1 -> enable and data input
+        - align the bits with PORTK
+        - concatenate the RS/EN with the higher char bits 
+        - send to LCD
+        - make enable 0
+    - repeat for lower bits of the char 
+    */
     
-    PORTK = 0x01; // RS=1, EN=0
+    PORTK = 0x01; // RS=1, EN=0 - REVIEW (0x01 = 10 bin) - 
     
-    // sending higher nibble
-    hnibble = cx&0xF0;
-    PORTK = 0x03; // RS=1, EN=1
+    // sending higher nibble 
+    hnibble = cx&0xF0; // - REVIEW masks the lower bits so that we only send the higher bits
+    PORTK = 0x03; // RS=1, EN=1 - REVIEW (0x03 = 11 bin)
     hnibble >>= 2; // shift two bits to the right to align with PORTK positions
-    PORTK = hnibble|0x03;
+    PORTK = hnibble|0x03; // - REVIEW (takes first part of char cx and concatenate with "00000011" (which is RS=1 and EN=1)
     asm("nop");
     asm("nop");
     asm("nop");    
-    PORTK = 0x01; // RS=1, E=0
+    PORTK = 0x01; // RS=1, E=0 // - REVIEW (takes first part of char cx and concatenate with "00000011" (which is RS=1 and EN=1)
     
     // sending lower nibble
     lnibble = cx & 0x0F;
