@@ -1,0 +1,285 @@
+#include <16F628A.h>
+#fuses NOWDT, PUT, NOPROTECT, BROWNOUT, NOMCLR, NOLVP, NOCPD, INTRC_IO,
+#use delay (clock= 20000000)
+
+#include <tones.c>
+#include <stdlib.h>
+
+#define max_round 25
+#define mod 4
+
+#byte TRISA = 0x85
+#byte TRISB = 0x86
+#bit A0 = 0x05.0 // BLUE LIGHT
+#bit A1 = 0x05.1 // GREEN LIGHT
+#bit A2 = 0x05.2 // YELLOW LIGHT
+#bit A3 = 0x05.3 // RED LIGHT
+#bit A6 = 0x05.6 // PLAY LED
+#bit A7 = 0x05.7 // WAIT LED
+#bit B0 = 0x06.0 // RED SWITCH
+#bit B1 = 0x06.1 // YELLOW SWITCH
+#bit B2 = 0x06.2 // GREEN SWITCH
+#bit B3 = 0x06.3 // BLUE SWITCH
+#bit B4 = 0x06.4 // START PB
+#bit B6 = 0x06.6 // 7 SEGMENT CLOCK
+#bit B7 = 0x06.7 // 7 SEGMENT RESET
+
+void slow_down();
+void victory();
+void led_on();
+void led_off();
+void hush();
+int error, n, i, j, pb_pressed, not_pressed, seed, b, lol;
+int sequence[max_round];
+int16 t;
+
+
+
+void main() {
+
+   TRISA = 0x00; // 1100 0000
+   TRISB = 0x3F; // 0011 1111
+   
+   delay_ms(30);
+
+while(1){
+   seed = 0;
+   led_off();
+   t = 200;
+  
+   a6 = 1;
+   a7 = 0;
+   
+   while(!b4){ //Generating seed at the start of the program. Only gets out when PB start is pressed
+      seed++;
+   }
+   
+   b7 = 1;
+   delay_ms(10);
+   b7 = 0;
+   srand(seed);
+   error= FALSE;
+   n = 0;
+   delay_ms(20);
+
+   
+   while (n < max_round && error != TRUE) {
+   
+      b6=1;
+      delay_ms(20);
+      b6=0;
+      
+      a6 = 0;
+      a7 = 1;
+      
+      led_off();
+      slow_down();
+      sequence[n] = rand() % mod; // Generating a random value between 0 to 3 and fill the array
+      
+      led_on ();
+      generate_tone (G_NOTE[3],25);
+      delay_ms(25);
+      led_off ();
+      delay_ms(25);
+      led_on ();
+      generate_tone (G_NOTE[3],25);
+      delay_ms(25);
+      led_off ();
+      delay_ms(100);
+      
+      for (i=0; i<=n; i++){   // LED flashing according to sequence value
+    if (sequence[i] == 0){    // and it will get out of the "for loop" because "i<=n"
+      a0 = 1;
+      generate_tone(Eb_NOTE[4], 25);}
+    else if (sequence[i] == 1){
+      a1 = 1;
+      generate_tone(C_NOTE[4], 25);}
+    else if (sequence[i] == 2){
+      a2 = 1;
+      generate_tone(E_NOTE[4], 25);}
+    else{
+      a3 = 1;
+      generate_tone(F_NOTE[4], 25);}
+    delay_ms(t);   // LED stay on depending on t
+    led_off();
+    delay_ms(t/3);   // LED will wait for half t
+         }
+
+      a7 = 0;
+      a6 = 1;
+      for (j=0; j<=n; j++) {
+     not_pressed = 0;
+     
+     while (not_pressed == 0) {
+          not_pressed = 1;
+         if (b0 == 1){
+          pb_pressed = 0;
+          a0=1;
+          generate_tone(Eb_NOTE[4], 25); }
+         else if (b1 == 1){
+          pb_pressed = 1;
+          a1=1;
+          generate_tone(C_NOTE[4], 25);}
+         else if (b2 == 1){
+          pb_pressed = 2;  
+          a2=1;
+          generate_tone(E_NOTE[4], 25);}
+         else if (b3 == 1){
+          pb_pressed = 3; 
+          a3=1;
+          generate_tone(F_NOTE[4], 25);}
+         else
+          not_pressed = 0;
+         }
+     while(b0 == 1 || b1 == 1 || b2 == 1 || b3 == 1);    
+     led_off();
+     delay_ms (20);
+   
+
+     if (pb_pressed != sequence[j]) {
+     error = TRUE;
+     j = n + 1;
+     }
+      }
+      n++;
+}
+
+   a6 = 0;
+   a7 = 1;
+
+if(error != FALSE){
+a3=1;
+generate_tone(E_note[3],50);
+a3=0;
+delay_ms(50);
+a3=1;
+generate_tone(E_note[3],50);
+delay_ms(200);
+hush();
+
+}
+else
+victory();
+
+delay_ms(200);
+}
+}
+
+void led_off() {
+   a0 = 0;
+   a1 = 0;
+   a2 = 0;
+   a3 = 0;
+}
+
+void led_on() {
+   a0 = 1;
+   a1 = 1;
+   a2 = 1;
+   a3 = 1;
+}
+
+void victory() {
+for (b=0; b<15; b++){ 
+a0=1;
+delay_ms(5);
+a0=0;
+delay_ms(5);
+a1=1;
+delay_ms(5);
+a1=0;
+delay_ms(5);
+a2=1;
+delay_ms(5);
+a2=0;
+delay_ms(5);
+a3=1;
+delay_ms(5);
+a3=0;  //backward
+delay_ms(5);
+a2=1;
+delay_ms(5);
+a2=0;
+delay_ms(5);
+a1=1;
+delay_ms(5);
+a1=0;
+delay_ms(5);
+}
+}
+
+void slow_down(){
+   if (t > 50)
+t = 200 - (n * 15);
+   else
+t = 30;
+}
+
+void hush(){
+if(b4 == 1 && n == 5)
+{
+lol = 0;
+while(b4 == 1);
+while(lol == 0)
+{
+for (b=0; b<=46; b++){ 
+b6=1;
+generate_tone(F_NOTE[4], 5);
+b6=0;
+a0=1;
+delay_ms(5);
+a0=0;
+delay_ms(5);
+a1=1;
+delay_ms(5);
+a1=0;
+delay_ms(5);
+a2=1;
+delay_ms(5);
+a2=0;
+delay_ms(5);
+b6=1;
+generate_tone(F_NOTE[4], 5);
+b6=0;
+a3=1;
+delay_ms(5);
+a3=0;  //backward
+delay_ms(5);
+a2=1;
+delay_ms(5);
+a2=0;
+delay_ms(5);
+a1=1;
+delay_ms(5);
+a1=0;
+delay_ms(5);
+}
+a6 = 1;
+a7 = 0;
+
+   while (b4 == 0) {          
+         if (b0 == 1){
+          a0=1;
+          generate_tone(Eb_NOTE[4], 25); 
+          while(b0 == 1);   
+          led_off();}
+         if (b1 == 1){
+          a1=1;
+          generate_tone(C_NOTE[4], 25);
+          while(b1 == 1); 
+          led_off();}
+         if (b2 == 1){
+          a2=1;
+          generate_tone(E_NOTE[4], 25);
+          while(b2 == 1); 
+          led_off();}
+         if (b3 == 1){
+          a3=1;
+          generate_tone(F_NOTE[4], 25);
+          while(b3 == 1);   
+          led_off();}
+         }
+lol = 1;
+}
+}
+}
