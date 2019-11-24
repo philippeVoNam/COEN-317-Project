@@ -30,7 +30,7 @@ Section Name                    Size  Type     From       To       Segment
 ---------------------------------------------------------------------------------------------
 .init                             16     R     0xC000     0xC00F   ROM_C000
 .rodata                          114     R     0xC010     0xC081   ROM_C000
-.text                           1357     R     0xC082     0xC5CE   ROM_C000
+.text                           1353     R     0xC082     0xC5CA   ROM_C000
 .stack                           256   R/W     0x1000     0x10FF   RAM
 .data                              4   R/W     0x1100     0x1103   RAM
 .abs_section_8                     1   N/I        0x8        0x8   .absSeg0
@@ -375,13 +375,13 @@ Section Name                    Size  Type     From       To       Segment
 .abs_section_2ae                   2   N/I      0x2AE      0x2AF   .absSeg339
 .abs_section_2be                   2   N/I      0x2BE      0x2BF   .absSeg340
 .common                           44   R/W     0x1104     0x112F   RAM
-RUNTIME                          344     R     0xC5CF     0xC726   ROM_C000
-CodeSec                           68     R     0xC727     0xC76A   ROM_C000
+RUNTIME                          344     R     0xC5CB     0xC722   ROM_C000
+CodeSec                           68     R     0xC723     0xC766   ROM_C000
 DataSec                            2   R/W     0x1130     0x1131   RAM
 .vectSeg341_vect                   2     R     0xFFFE     0xFFFF   .vectSeg341
 
 Summary of section sizes per section type:
-READ_ONLY (R):         76D (dec:     1901)
+READ_ONLY (R):         769 (dec:     1897)
 READ_WRITE (R/W):      132 (dec:      306)
 NO_INIT (N/I):         190 (dec:      400)
 
@@ -741,21 +741,21 @@ MODULE:                 -- mc9s12dg256.c.o --
      _CAN4TXTSR                                 2BE       2       2       0   .abs_section_2be
 MODULE:                 -- main.c.o --
 - PROCEDURES:
-     main                                      C082     152     338       8   .text       
-     cmd2LCD                                   C1D4      3D      61      20   .text       
-     openLCD                                   C211      22      34       2   .text       
-     putcLCD                                   C233      41      65      13   .text       
-     display_start                             C274      1E      30       1   .text       
-     display_get_ready                         C292      59      89       1   .text       
-     display_incorrect                         C2EB      27      39       1   .text       
-     display_correct                           C312      27      39       1   .text       
-     display_level                             C339      74     116       1   .text       
-     display_goodbye                           C3AD      1D      29       1   .text       
-     display_you_lose                          C3CA      1D      29       1   .text       
-     display_you_win                           C3E7      1D      29       1   .text       
-     display_challenge                         C404      2B      43       1   .text       
-     delay_LCD                                 C42F      1E      30       8   .text       
-     key_input                                 C44D     107     263      14   .text       
+     main                                      C082     14E     334       8   .text       
+     cmd2LCD                                   C1D0      3D      61      20   .text       
+     openLCD                                   C20D      22      34       1   .text       
+     putcLCD                                   C22F      41      65      13   .text       
+     display_start                             C270      1E      30       1   .text       
+     display_get_ready                         C28E      59      89       1   .text       
+     display_incorrect                         C2E7      27      39       1   .text       
+     display_correct                           C30E      27      39       1   .text       
+     display_level                             C335      74     116       1   .text       
+     display_goodbye                           C3A9      1D      29       1   .text       
+     display_you_lose                          C3C6      1D      29       1   .text       
+     display_you_win                           C3E3      1D      29       1   .text       
+     display_challenge                         C400      2B      43       1   .text       
+     delay_LCD                                 C42B      1E      30       8   .text       
+     key_input                                 C449     107     263      14   .text       
 - VARIABLES:
      keypad                                    C010      10      16       9   .rodata     
      element                                   C020       E      14       1   .rodata     
@@ -785,31 +785,31 @@ MODULE:                 -- Start12.c.o --
      __SEG_END_SSTACK                          1100       0       0       1               
 MODULE:                 -- STDLIB.C.o (ansisi.lib) --
 - PROCEDURES:
-     rand                                      C554      72     114       1   .text       
-     srand                                     C5C6       9       9       1   .text       
+     rand                                      C550      72     114       1   .text       
+     srand                                     C5C2       9       9       1   .text       
 - VARIABLES:
      seed                                      1100       4       4      14   .data       
 MODULE:                 -- rtshc12.c.o (ansisi.lib) --
 - PROCEDURES:
-     _LNEG                                     C5CF       D      13       1   RUNTIME     
-     _LMULS16x32                               C5DC      1F      31       2   RUNTIME     
-     _lDivMod                                  C5FB      BE     190       4   RUNTIME     
-     _NEG_P                                    C6B9       F      15       7   RUNTIME     
-     _LDIVS                                    C6C8      35      53       1   RUNTIME     
-     _LMODS                                    C6FD      2A      42       1   RUNTIME     
+     _LNEG                                     C5CB       D      13       1   RUNTIME     
+     _LMULS16x32                               C5D8      1F      31       2   RUNTIME     
+     _lDivMod                                  C5F7      BE     190       4   RUNTIME     
+     _NEG_P                                    C6B5       F      15       7   RUNTIME     
+     _LDIVS                                    C6C4      35      53       1   RUNTIME     
+     _LMODS                                    C6F9      2A      42       1   RUNTIME     
 - VARIABLES:
 MODULE:                 -- mixasm.asm.o --
 - PROCEDURES:
-     asm_mydelay1ms                            C727       7       7      19   CodeSec     
-     oloop                                     C72E       3       3       0   CodeSec     
-     iloop                                     C731      11      17       0   CodeSec     
-     next                                      C742       5       5       0   CodeSec     
-     fini                                      C747       2       2       0   CodeSec     
-     asm_mydelay10us                           C749       7       7       2   CodeSec     
-     uoloop                                    C750       3       3       0   CodeSec     
-     uiloop                                    C753      11      17       0   CodeSec     
-     unext                                     C764       5       5       0   CodeSec     
-     ufini                                     C769       2       2       0   CodeSec     
+     asm_mydelay1ms                            C723       7       7      19   CodeSec     
+     oloop                                     C72A       3       3       0   CodeSec     
+     iloop                                     C72D      11      17       0   CodeSec     
+     next                                      C73E       5       5       0   CodeSec     
+     fini                                      C743       2       2       0   CodeSec     
+     asm_mydelay10us                           C745       7       7       2   CodeSec     
+     uoloop                                    C74C       3       3       0   CodeSec     
+     uiloop                                    C74F      11      17       0   CodeSec     
+     unext                                     C760       5       5       0   CodeSec     
+     ufini                                     C765       2       2       0   CodeSec     
 - VARIABLES:
      ASMData1ms                                1130       1       1       2   DataSec     
      ASMData10us                               1131       1       1       2   DataSec     
@@ -819,7 +819,7 @@ MODULE STATISTIC
   Name                                      Data   Code  Const
 ---------------------------------------------------------------------------------------------
   mc9s12dg256.c.o                            400      0      0
-  main.c.o                                    44   1234    114
+  main.c.o                                    44   1230    114
   Start12.c.o                                  0     16      0
   STDLIB.C.o (ansisi.lib)                      4    123      0
   rtshc12.c.o (ansisi.lib)                     0    344      0
@@ -1902,39 +1902,39 @@ OBJECT LIST SORTED BY ADDRESS
      goodbye_message                           C066       9       9       1   .rodata     
      you_lose                                  C06F       9       9       1   .rodata     
      you_win                                   C078       A      10       1   .rodata     
-     main                                      C082     152     338       8   .text       
-     cmd2LCD                                   C1D4      3D      61      20   .text       
-     openLCD                                   C211      22      34       2   .text       
-     putcLCD                                   C233      41      65      13   .text       
-     display_start                             C274      1E      30       1   .text       
-     display_get_ready                         C292      59      89       1   .text       
-     display_incorrect                         C2EB      27      39       1   .text       
-     display_correct                           C312      27      39       1   .text       
-     display_level                             C339      74     116       1   .text       
-     display_goodbye                           C3AD      1D      29       1   .text       
-     display_you_lose                          C3CA      1D      29       1   .text       
-     display_you_win                           C3E7      1D      29       1   .text       
-     display_challenge                         C404      2B      43       1   .text       
-     delay_LCD                                 C42F      1E      30       8   .text       
-     key_input                                 C44D     107     263      14   .text       
-     rand                                      C554      72     114       1   .text       
-     srand                                     C5C6       9       9       1   .text       
-     _LNEG                                     C5CF       D      13       1   RUNTIME     
-     _LMULS16x32                               C5DC      1F      31       2   RUNTIME     
-     _lDivMod                                  C5FB      BE     190       4   RUNTIME     
-     _NEG_P                                    C6B9       F      15       7   RUNTIME     
-     _LDIVS                                    C6C8      35      53       1   RUNTIME     
-     _LMODS                                    C6FD      2A      42       1   RUNTIME     
-     asm_mydelay1ms                            C727       7       7      19   CodeSec     
-     oloop                                     C72E       3       3       0   CodeSec     
-     iloop                                     C731      11      17       0   CodeSec     
-     next                                      C742       5       5       0   CodeSec     
-     fini                                      C747       2       2       0   CodeSec     
-     asm_mydelay10us                           C749       7       7       2   CodeSec     
-     uoloop                                    C750       3       3       0   CodeSec     
-     uiloop                                    C753      11      17       0   CodeSec     
-     unext                                     C764       5       5       0   CodeSec     
-     ufini                                     C769       2       2       0   CodeSec     
+     main                                      C082     14E     334       8   .text       
+     cmd2LCD                                   C1D0      3D      61      20   .text       
+     openLCD                                   C20D      22      34       1   .text       
+     putcLCD                                   C22F      41      65      13   .text       
+     display_start                             C270      1E      30       1   .text       
+     display_get_ready                         C28E      59      89       1   .text       
+     display_incorrect                         C2E7      27      39       1   .text       
+     display_correct                           C30E      27      39       1   .text       
+     display_level                             C335      74     116       1   .text       
+     display_goodbye                           C3A9      1D      29       1   .text       
+     display_you_lose                          C3C6      1D      29       1   .text       
+     display_you_win                           C3E3      1D      29       1   .text       
+     display_challenge                         C400      2B      43       1   .text       
+     delay_LCD                                 C42B      1E      30       8   .text       
+     key_input                                 C449     107     263      14   .text       
+     rand                                      C550      72     114       1   .text       
+     srand                                     C5C2       9       9       1   .text       
+     _LNEG                                     C5CB       D      13       1   RUNTIME     
+     _LMULS16x32                               C5D8      1F      31       2   RUNTIME     
+     _lDivMod                                  C5F7      BE     190       4   RUNTIME     
+     _NEG_P                                    C6B5       F      15       7   RUNTIME     
+     _LDIVS                                    C6C4      35      53       1   RUNTIME     
+     _LMODS                                    C6F9      2A      42       1   RUNTIME     
+     asm_mydelay1ms                            C723       7       7      19   CodeSec     
+     oloop                                     C72A       3       3       0   CodeSec     
+     iloop                                     C72D      11      17       0   CodeSec     
+     next                                      C73E       5       5       0   CodeSec     
+     fini                                      C743       2       2       0   CodeSec     
+     asm_mydelay10us                           C745       7       7       2   CodeSec     
+     uoloop                                    C74C       3       3       0   CodeSec     
+     uiloop                                    C74F      11      17       0   CodeSec     
+     unext                                     C760       5       5       0   CodeSec     
+     ufini                                     C765       2       2       0   CodeSec     
 
 *********************************************************************************************
 UNUSED-OBJECTS SECTION
@@ -1966,8 +1966,8 @@ OBJECT-DEPENDENCIES SECTION
 ---------------------------------------------------------------------------------------------
 _Startup                  USES __SEG_END_SSTACK main 
 main                      USES _DDRJ _DDRP _PTP _DDRAB main openLCD 
-                                asm_mydelay1ms display_start answer level _PORTAB row seed 
-                                srand i rand a element sequence display_level 
+                                asm_mydelay1ms _PORTAB row seed srand display_start answer 
+                                level i rand a element sequence display_level 
                                 display_challenge cmd2LCD display_get_ready key_input 
                                 answer_sequence display_incorrect display_correct 
                                 display_you_lose display_you_win display_goodbye 
@@ -2018,6 +2018,8 @@ DEPENDENCY TREE
  |  |          
  |  +- asm_mydelay1ms       (see above)
  |  |  
+ |  +- srand               
+ |  |    
  |  +- display_start       
  |  |  | 
  |  |  +- putcLCD             
@@ -2036,8 +2038,6 @@ DEPENDENCY TREE
  |  |  |  
  |  |  +- asm_mydelay1ms       (see above)
  |  |     
- |  +- srand               
- |  |    
  |  +- rand                
  |  |  | 
  |  |  +- _LDIVS              
@@ -2145,5 +2145,5 @@ STATISTIC SECTION
 ExeFile:
 --------
 Number of blocks to be downloaded: 4
-Total size of all blocks to be downloaded: 1901
+Total size of all blocks to be downloaded: 1897
 

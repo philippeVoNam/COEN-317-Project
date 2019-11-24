@@ -63,21 +63,21 @@ void main(void){
     asm_mydelay1ms(2000);
     openLCD();
     asm_mydelay1ms(2000);
+    DDRA = 0x0F;
+    PORTA = PORTA | 0x0F; 
+    row = PORTA & 0xF0;
+    while(row == 0x00) {
+    	row = PORTA & 0xF0;
+    	seed++;
+    }
+    srand(seed);
+    asm_mydelay1ms(2000);
+      
     while (1){
       asm_mydelay1ms(2000);
       display_start();
       if(answer == '1'){
         level = 2; 
-        DDRA = 0x0F;
-        PORTA = PORTA | 0x0F; 
-      	row = PORTA & 0xF0;
-      	while(row == 0x00) {
-      		row = PORTA & 0xF0;
-      		seed++;
-      	}
-      	asm_mydelay1ms(2000);
-        openLCD();
-      	srand(seed);
       	for(i = 0; i < 16; i++) {
       		a = rand() % 14;
       		sequence[i] = element[a];
