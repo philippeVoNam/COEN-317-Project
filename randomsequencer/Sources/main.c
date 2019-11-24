@@ -28,37 +28,35 @@ const unsigned char keypad[4][4] =
 };
 
 const unsigned char element[14] = { '0','1','2','3','4','5','6','7','8','9','A','B','C','D'};
+const unsigned char start_message[15] = { 'S','t','a','r','t',' ','G','a','m','e','?',' ','1','/','0'};
 unsigned char sequence[10];	
 
 unsigned char column,row;
-unsigned int a,i,seed;
+unsigned int a,i,seed,answer;
+
 
 /**************MAIN*******************************/
 void main(void){                          //OPEN MAIN
     asm_mydelay1ms(2000);
+    openLCD();
+    asm_mydelay1ms(2000);
+    answer = display_start();
     while(1){
-    	DDRA = 0x0F;
-    	PORTA = PORTA | 0x0F; 
-		row = PORTA & 0xF0;
-		while(row == 0x00) {
-			row = PORTA & 0xF0;
-			seed++;
-		}
-		asm_mydelay1ms(2000);
-    	openLCD();
-		srand(seed);
-		for(i = 0; i < 10; i++) {
-			a = rand() % 14;
-			sequence[i] = element[a];
-			
-		}
-		display_challenge(sequence, 10, 5);	
+      DDRA = 0x0F;
+      PORTA = PORTA | 0x0F; 
+  		row = PORTA & 0xF0;
+  		while(row == 0x00) {
+  			row = PORTA & 0xF0;
+  			seed++;
+  		}
+      asm_mydelay1ms(2000);
+  	  srand(seed);
+  		for(i = 0; i < 10; i++) {
+  			a = rand() % 14;
+  			sequence[i] = element[a];	
+  		}
+  		display_challenge(sequence, 10, 5);	
     }
-	
-	
-
-
-
 }                                         //CLOSE MAIN
 
 void cmd2LCD (char cmd) {  // cmd: two nibbles. First the higher is sent over DB7-DB4 pins. This is actually DB7-DB4
@@ -142,7 +140,18 @@ void putsLCD (char *ptr) {
     }
 }
 
-
+int display_start(){
+   int index;
+   for(index = 0; index < 15; index++){
+      putcLCD(start_message[index]);
+   }
+   do{
+    PORTA = PORTA | 0x0F;            //COLUMNS SET HIGH
+    row = PORTA & 0xF0;              //READ ROWS
+   }while(row == 0x00);              //WAIT FOR INPUT!!!
+   cmd2LCD(0x01); // clear screen
+   asm_mydelay1ms(2000);
+}
 // functions
 void display_challenge(char numberSequence[], int size, int time) {
    // read the array of int and convert it into an array of char 

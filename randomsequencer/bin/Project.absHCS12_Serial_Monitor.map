@@ -1,5 +1,5 @@
 *** EVALUATION ***
-PROGRAM "C:\Users\Kien & Lam\Desktop\COEN317 Project\newkeypadtest\bin\Project.absHCS12_Serial_Monitor.abs"
+PROGRAM "C:\Users\filip\Desktop\coen317\COEN-317-Project\randomsequencer\bin\Project.absHCS12_Serial_Monitor.abs"
 
 *********************************************************************************************
 TARGET SECTION
@@ -29,8 +29,8 @@ SECTION-ALLOCATION SECTION
 Section Name                    Size  Type     From       To       Segment
 ---------------------------------------------------------------------------------------------
 .init                             16     R     0xC000     0xC00F   ROM_C000
-.rodata                           14     R     0xC010     0xC01D   ROM_C000
-.text                            463     R     0xC01E     0xC1EC   ROM_C000
+.rodata                           29     R     0xC010     0xC02C   ROM_C000
+.text                            520     R     0xC02D     0xC234   ROM_C000
 .stack                           256   R/W     0x1000     0x10FF   RAM
 .data                              4   R/W     0x1100     0x1103   RAM
 .abs_section_8                     1   N/I        0x8        0x8   .absSeg0
@@ -374,15 +374,15 @@ Section Name                    Size  Type     From       To       Segment
 .abs_section_17e                   2   N/I      0x17E      0x17F   .absSeg338
 .abs_section_2ae                   2   N/I      0x2AE      0x2AF   .absSeg339
 .abs_section_2be                   2   N/I      0x2BE      0x2BF   .absSeg340
-.common                           17   R/W     0x1104     0x1114   RAM
-RUNTIME                          344     R     0xC1ED     0xC344   ROM_C000
-CodeSec                           68     R     0xC345     0xC388   ROM_C000
-DataSec                            2   R/W     0x1115     0x1116   RAM
+.common                           19   R/W     0x1104     0x1116   RAM
+RUNTIME                          344     R     0xC235     0xC38C   ROM_C000
+CodeSec                           68     R     0xC38D     0xC3D0   ROM_C000
+DataSec                            2   R/W     0x1117     0x1118   RAM
 .vectSeg341_vect                   2     R     0xFFFE     0xFFFF   .vectSeg341
 
 Summary of section sizes per section type:
-READ_ONLY (R):         38B (dec:      907)
-READ_WRITE (R/W):      117 (dec:      279)
+READ_ONLY (R):         3D3 (dec:      979)
+READ_WRITE (R/W):      119 (dec:      281)
 NO_INIT (N/I):         190 (dec:      400)
 
 *********************************************************************************************
@@ -680,7 +680,7 @@ MODULE:                 -- mc9s12dg256.c.o --
      _CAN4TXDSR7                                2BB       1       1       0   .abs_section_2bb
      _CAN4TXDLR                                 2BC       1       1       0   .abs_section_2bc
      _CAN4TXTBPR                                2BD       1       1       0   .abs_section_2bd
-     _PORTAB                                      0       2       2       3   .abs_section_0
+     _PORTAB                                      0       2       2       5   .abs_section_0
      _DDRAB                                       2       2       2       1   .abs_section_2
      _PARTID                                     1A       2       2       0   .abs_section_1a
      _TCNT                                       44       2       2       0   .abs_section_44
@@ -741,19 +741,22 @@ MODULE:                 -- mc9s12dg256.c.o --
      _CAN4TXTSR                                 2BE       2       2       0   .abs_section_2be
 MODULE:                 -- main.c.o --
 - PROCEDURES:
-     main                                      C01E      6C     108       1   .text       
-     cmd2LCD                                   C08A      3D      61       6   .text       
-     openLCD                                   C0C7      22      34       1   .text       
-     putcLCD                                   C0E9      41      65       1   .text       
-     display_challenge                         C12A      25      37       1   .text       
-     delay_LCD                                 C14F      23      35       1   .text       
+     main                                      C02D      77     119       1   .text       
+     cmd2LCD                                   C0A4      3D      61       7   .text       
+     openLCD                                   C0E1      22      34       1   .text       
+     putcLCD                                   C103      41      65       2   .text       
+     display_start                             C144      2D      45       1   .text       
+     display_challenge                         C171      26      38       1   .text       
+     delay_LCD                                 C197      23      35       1   .text       
 - VARIABLES:
      element                                   C010       E      14       1   .rodata     
+     start_message                             C01E       F      15       1   .rodata     
      sequence                                  1104       A      10       2   .common     
-     row                                       110E       1       1       3   .common     
+     row                                       110E       1       1       4   .common     
      a                                         110F       2       2       1   .common     
      i                                         1111       2       2       3   .common     
      seed                                      1113       2       2       3   .common     
+     answer                                    1115       2       2       1   .common     
 MODULE:                 -- Start12.c.o --
 - PROCEDURES:
      _Startup                                  C000      10      16       0   .init       
@@ -762,41 +765,41 @@ MODULE:                 -- Start12.c.o --
      __SEG_END_SSTACK                          1100       0       0       1               
 MODULE:                 -- STDLIB.C.o (ansisi.lib) --
 - PROCEDURES:
-     rand                                      C172      72     114       1   .text       
-     srand                                     C1E4       9       9       1   .text       
+     rand                                      C1BA      72     114       1   .text       
+     srand                                     C22C       9       9       1   .text       
 - VARIABLES:
      seed                                      1100       4       4      14   .data       
 MODULE:                 -- rtshc12.c.o (ansisi.lib) --
 - PROCEDURES:
-     _LNEG                                     C1ED       D      13       1   RUNTIME     
-     _LMULS16x32                               C1FA      1F      31       2   RUNTIME     
-     _lDivMod                                  C219      BE     190       4   RUNTIME     
-     _NEG_P                                    C2D7       F      15       7   RUNTIME     
-     _LDIVS                                    C2E6      35      53       1   RUNTIME     
-     _LMODS                                    C31B      2A      42       1   RUNTIME     
+     _LNEG                                     C235       D      13       1   RUNTIME     
+     _LMULS16x32                               C242      1F      31       2   RUNTIME     
+     _lDivMod                                  C261      BE     190       4   RUNTIME     
+     _NEG_P                                    C31F       F      15       7   RUNTIME     
+     _LDIVS                                    C32E      35      53       1   RUNTIME     
+     _LMODS                                    C363      2A      42       1   RUNTIME     
 - VARIABLES:
 MODULE:                 -- mixasm.asm.o --
 - PROCEDURES:
-     asm_mydelay1ms                            C345       7       7       5   CodeSec     
-     oloop                                     C34C       3       3       0   CodeSec     
-     iloop                                     C34F      11      17       0   CodeSec     
-     next                                      C360       5       5       0   CodeSec     
-     fini                                      C365       2       2       0   CodeSec     
-     asm_mydelay10us                           C367       7       7       2   CodeSec     
-     uoloop                                    C36E       3       3       0   CodeSec     
-     uiloop                                    C371      11      17       0   CodeSec     
-     unext                                     C382       5       5       0   CodeSec     
-     ufini                                     C387       2       2       0   CodeSec     
+     asm_mydelay1ms                            C38D       7       7       7   CodeSec     
+     oloop                                     C394       3       3       0   CodeSec     
+     iloop                                     C397      11      17       0   CodeSec     
+     next                                      C3A8       5       5       0   CodeSec     
+     fini                                      C3AD       2       2       0   CodeSec     
+     asm_mydelay10us                           C3AF       7       7       2   CodeSec     
+     uoloop                                    C3B6       3       3       0   CodeSec     
+     uiloop                                    C3B9      11      17       0   CodeSec     
+     unext                                     C3CA       5       5       0   CodeSec     
+     ufini                                     C3CF       2       2       0   CodeSec     
 - VARIABLES:
-     ASMData1ms                                1115       1       1       2   DataSec     
-     ASMData10us                               1116       1       1       2   DataSec     
+     ASMData1ms                                1117       1       1       2   DataSec     
+     ASMData10us                               1118       1       1       2   DataSec     
 
 *********************************************************************************************
 MODULE STATISTIC
   Name                                      Data   Code  Const
 ---------------------------------------------------------------------------------------------
   mc9s12dg256.c.o                            400      0      0
-  main.c.o                                    17    340     14
+  main.c.o                                    19    397     29
   Start12.c.o                                  0     16      0
   STDLIB.C.o (ansisi.lib)                      4    123      0
   rtshc12.c.o (ansisi.lib)                     0    344      0
@@ -807,13 +810,14 @@ MODULE STATISTIC
 SECTION USE IN OBJECT-ALLOCATION SECTION
 ---------------------------------------------------------------------------------------------
 SECTION: ".text"
-  main cmd2LCD openLCD putcLCD display_challenge delay_LCD rand srand 
+  main cmd2LCD openLCD putcLCD display_start display_challenge delay_LCD rand 
+  srand 
 SECTION: ".data"
   seed 
 SECTION: ".init"
   _Startup 
 SECTION: ".rodata"
-  element 
+  element start_message 
 SECTION: ".abs_section_8"
   _PORTE 
 SECTION: ".abs_section_9"
@@ -1497,7 +1501,7 @@ SECTION: ".abs_section_2ae"
 SECTION: ".abs_section_2be"
   _CAN4TXTSR 
 SECTION: ".common"
-  sequence row a i seed 
+  sequence row a i seed answer 
 SECTION: "RUNTIME"
   _LNEG _LMULS16x32 _lDivMod _NEG_P _LDIVS _LMODS 
 SECTION: "CodeSec"
@@ -1510,7 +1514,7 @@ SECTION: "DataSec"
 OBJECT LIST SORTED BY ADDRESS
      Name                                      Addr   hSize   dSize     Ref    Section   RLIB
 ---------------------------------------------------------------------------------------------
-     _PORTAB                                      0       2       2       3   .abs_section_0
+     _PORTAB                                      0       2       2       5   .abs_section_0
      _DDRAB                                       2       2       2       1   .abs_section_2
      _PORTE                                       8       1       1       0   .abs_section_8
      _DDRE                                        9       1       1       0   .abs_section_9
@@ -1853,38 +1857,41 @@ OBJECT LIST SORTED BY ADDRESS
      _CAN4TXTSR                                 2BE       2       2       0   .abs_section_2be
      seed                                      1100       4       4      14   .data       
      sequence                                  1104       A      10       2   .common     
-     row                                       110E       1       1       3   .common     
+     row                                       110E       1       1       4   .common     
      a                                         110F       2       2       1   .common     
      i                                         1111       2       2       3   .common     
      seed                                      1113       2       2       3   .common     
-     ASMData1ms                                1115       1       1       2   DataSec     
-     ASMData10us                               1116       1       1       2   DataSec     
+     answer                                    1115       2       2       1   .common     
+     ASMData1ms                                1117       1       1       2   DataSec     
+     ASMData10us                               1118       1       1       2   DataSec     
      _Startup                                  C000      10      16       0   .init       
      element                                   C010       E      14       1   .rodata     
-     main                                      C01E      6C     108       1   .text       
-     cmd2LCD                                   C08A      3D      61       6   .text       
-     openLCD                                   C0C7      22      34       1   .text       
-     putcLCD                                   C0E9      41      65       1   .text       
-     display_challenge                         C12A      25      37       1   .text       
-     delay_LCD                                 C14F      23      35       1   .text       
-     rand                                      C172      72     114       1   .text       
-     srand                                     C1E4       9       9       1   .text       
-     _LNEG                                     C1ED       D      13       1   RUNTIME     
-     _LMULS16x32                               C1FA      1F      31       2   RUNTIME     
-     _lDivMod                                  C219      BE     190       4   RUNTIME     
-     _NEG_P                                    C2D7       F      15       7   RUNTIME     
-     _LDIVS                                    C2E6      35      53       1   RUNTIME     
-     _LMODS                                    C31B      2A      42       1   RUNTIME     
-     asm_mydelay1ms                            C345       7       7       5   CodeSec     
-     oloop                                     C34C       3       3       0   CodeSec     
-     iloop                                     C34F      11      17       0   CodeSec     
-     next                                      C360       5       5       0   CodeSec     
-     fini                                      C365       2       2       0   CodeSec     
-     asm_mydelay10us                           C367       7       7       2   CodeSec     
-     uoloop                                    C36E       3       3       0   CodeSec     
-     uiloop                                    C371      11      17       0   CodeSec     
-     unext                                     C382       5       5       0   CodeSec     
-     ufini                                     C387       2       2       0   CodeSec     
+     start_message                             C01E       F      15       1   .rodata     
+     main                                      C02D      77     119       1   .text       
+     cmd2LCD                                   C0A4      3D      61       7   .text       
+     openLCD                                   C0E1      22      34       1   .text       
+     putcLCD                                   C103      41      65       2   .text       
+     display_start                             C144      2D      45       1   .text       
+     display_challenge                         C171      26      38       1   .text       
+     delay_LCD                                 C197      23      35       1   .text       
+     rand                                      C1BA      72     114       1   .text       
+     srand                                     C22C       9       9       1   .text       
+     _LNEG                                     C235       D      13       1   RUNTIME     
+     _LMULS16x32                               C242      1F      31       2   RUNTIME     
+     _lDivMod                                  C261      BE     190       4   RUNTIME     
+     _NEG_P                                    C31F       F      15       7   RUNTIME     
+     _LDIVS                                    C32E      35      53       1   RUNTIME     
+     _LMODS                                    C363      2A      42       1   RUNTIME     
+     asm_mydelay1ms                            C38D       7       7       7   CodeSec     
+     oloop                                     C394       3       3       0   CodeSec     
+     iloop                                     C397      11      17       0   CodeSec     
+     next                                      C3A8       5       5       0   CodeSec     
+     fini                                      C3AD       2       2       0   CodeSec     
+     asm_mydelay10us                           C3AF       7       7       2   CodeSec     
+     uoloop                                    C3B6       3       3       0   CodeSec     
+     uiloop                                    C3B9      11      17       0   CodeSec     
+     unext                                     C3CA       5       5       0   CodeSec     
+     ufini                                     C3CF       2       2       0   CodeSec     
 
 *********************************************************************************************
 UNUSED-OBJECTS SECTION
@@ -1917,11 +1924,14 @@ COPYDOWN SECTION
 OBJECT-DEPENDENCIES SECTION
 ---------------------------------------------------------------------------------------------
 _Startup                  USES __SEG_END_SSTACK main 
-main                      USES asm_mydelay1ms _DDRAB _PORTAB row seed openLCD 
-                                srand i rand a element sequence display_challenge 
+main                      USES asm_mydelay1ms openLCD display_start answer 
+                                _DDRAB _PORTAB row seed srand i rand a element 
+                                sequence display_challenge 
 cmd2LCD                   USES _PORTK asm_mydelay10us 
 openLCD                   USES _DDRK asm_mydelay1ms cmd2LCD 
 putcLCD                   USES _PORTK asm_mydelay10us 
+display_start             USES start_message putcLCD _PORTAB row cmd2LCD 
+                                asm_mydelay1ms 
 display_challenge         USES putcLCD delay_LCD 
 delay_LCD                 USES asm_mydelay1ms cmd2LCD 
 rand                      USES seed _LDIVS _LMODS _LMULS16x32 
@@ -1951,6 +1961,16 @@ DEPENDENCY TREE
  |  |     | 
  |  |     +- asm_mydelay10us     
  |  |          
+ |  +- display_start       
+ |  |  | 
+ |  |  +- putcLCD             
+ |  |  |  | 
+ |  |  |  +- asm_mydelay10us      (see above)
+ |  |  |     
+ |  |  +- cmd2LCD              (see above)
+ |  |  |  
+ |  |  +- asm_mydelay1ms       (see above)
+ |  |     
  |  +- srand               
  |  |    
  |  +- rand                
@@ -1973,10 +1993,8 @@ DEPENDENCY TREE
  |  |          
  |  +- display_challenge   
  |     | 
- |     +- putcLCD             
- |     |  | 
- |     |  +- asm_mydelay10us      (see above)
- |     |     
+ |     +- putcLCD              (see above)
+ |     |  
  |     +- delay_LCD           
  |        | 
  |        +- asm_mydelay1ms       (see above)
@@ -1993,6 +2011,6 @@ STATISTIC SECTION
 
 ExeFile:
 --------
-Number of blocks to be downloaded: 4
-Total size of all blocks to be downloaded: 907
+Number of blocks to be downloaded: 3
+Total size of all blocks to be downloaded: 979
 
