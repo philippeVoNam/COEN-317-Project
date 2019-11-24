@@ -50,7 +50,6 @@ void main(void){                          //OPEN MAIN
 		for(i = 0; i < 10; i++) {
 			a = rand() % 14;
 			sequence[i] = element[a];
-			
 		}
 		display_challenge(sequence, 10, 5);	
     }

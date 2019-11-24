@@ -1,14 +1,13 @@
 // function declarations 
 void delay_LCD(int seconds);
-void display_challenge(int numberSequence[], int size, int time);
+void display_challenge(char numberSequence[], int size, int time);
 
 // functions
-void display_challenge(int numberSequence[], int size, int time) {
+void display_challenge(char numberSequence[], int size, int time) {
    // read the array of int and convert it into an array of char 
    int index;
    for(index = 0; index < size; index++){
-      int numChar;
-      numChar = numberSequence[index] + '0'; // converting int number to a char (apprently the way to convert it and get a char on the LCD)
+      char numChar = numberSequence[index];
       putcLCD(numChar);
       if(index < (size-1)){
           putcLCD('-'); // putting a - between numbers except for the last one
@@ -28,3 +27,5 @@ void delay_LCD(int seconds){
     }
     cmd2LCD(0x01); // clear screen
 }
+
+// FIXME everytime we need to display_challenge -> we need a delay 
