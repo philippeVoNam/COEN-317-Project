@@ -11,6 +11,7 @@
 //returns null if no key pressed
 //will only return one character pressed at a time
 
+void start_timer (void);
 void cmd2LCD (char cmd);
 void openLCD(void);
 void putcLCD(char cx);
@@ -50,6 +51,22 @@ unsigned char sequence[16];
 unsigned char column,row,answer,level_char;
 unsigned int a,i,seed, level;
 unsigned char answer_sequence[16];
+unsigned int timeout = 0;
+unsigned int counter;
+
+__interrupt void TIMER0_ISR(void){
+ 
+    //fires on rising and falling edge of the input pin connected to timer
+ 
+    counter++;
+    if(counter >= 30){  // around 10 seconds with prescale value of 128
+        counter = 0;
+        TSCR1 = 0x00;
+        timeout = 1;
+ 
+    }; 
+ 
+}
                            
 
 /**************MAIN*******************************/
@@ -74,6 +91,7 @@ void main(void){
     asm_mydelay1ms(2000);
       
     while (1){
+      timeout = 0;	
       asm_mydelay1ms(2000);
       display_start();
       if(answer == '1'){
@@ -82,18 +100,27 @@ void main(void){
       		a = rand() % 14;
       		sequence[i] = element[a];
       	}
-      	while(level > 0 && level <= 16){
+      	while(level > 0 && level <= 16 && timeout == 0){
       	  asm_mydelay1ms(2000);
       	  display_level();
        	  asm_mydelay1ms(2000);	
       		display_challenge(sequence, level, 5);
           cmd2LCD(0x01); // clear screen
           asm_mydelay1ms(2000);	
-          display_get_ready();    		
+          display_get_ready(); 
+          
+          start_timer(); // 10 secound before the game timeout
+          	
       		for(i = 0; i < level; i++){
       		  key_input();
+      		  if(timeout == 1) {
+      		  	break;
+      		  }
       		  asm_mydelay1ms(2000);
       		  answer_sequence[i] = answer;
+      		}
+      		if(timeout == 1) {
+      		  	break;
       		}
       		asm_mydelay1ms(2000);
       		for(i = 0; i < level; i++){
@@ -111,9 +138,9 @@ void main(void){
       		}      		
       		asm_mydelay1ms(2000);
       		cmd2LCD(0x01); // clear screen
-      	}
+      	} // end of while
       	asm_mydelay1ms(2000);
-      	if(level == 17){
+      	if(level == 17 | timeout == 1){
       	 display_you_lose();
       	} 
       	else if(level == 18){
@@ -129,6 +156,14 @@ void main(void){
     }
 }
 //CLOSE MAIN
+
+void start_timer (void) {
+	counter = 0;
+	TSCR2 = 0x87; // Setting the prescale value to 128 and cause interrupt at overflow ~ overflow at 353 ms 
+	TCTL4 = 0x03; // Setting the interrupt on rising edge
+	TIE = 0x81; // Enable the interrupt for the timer
+	TSCR1 = 0x80; // Enable timer	
+}
                   
 
 void cmd2LCD (char cmd) {  // cmd: two nibbles. First the higher is sent over DB7-DB4 pins. This is actually DB7-DB4
@@ -379,7 +414,10 @@ void key_input(){
   asm_mydelay1ms(2000);
   //cmd2LCD(0x01); // clear screen
   
-   while(1){                              //OPEN WHILE(1)
+   while(1){                             //OPEN WHILE(1)
+         if(timeout == 1) {
+      		break;
+      	 }
       do{                                 //OPEN do1
          PORTA = PORTA | 0x0F;            //COLUMNS SET HIGH
          row = PORTA & 0xF0;              //READ ROWS
@@ -397,7 +435,10 @@ void key_input(){
 
       // THIS WHILE LOOP CHECKS EACH COLUMN TO FIND THE INTERSECTION IN THE KEY MATRIX
       // AND SETS THE COLUMN AND ROW VALUES ACCORDINGLY
-      while(1){                           //OPEN while(1)
+      while(1){
+      	 if(timeout == 1) {
+      		break;
+      	 }
          PORTA &= 0xF0;                   //CLEAR COLUMN
          PORTA |= 0x01;                   //COLUMN 0 SET HIGH
          row = PORTA & 0xF0;              //READ ROWS
